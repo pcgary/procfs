@@ -1,0 +1,13 @@
+Notes:
+1. This procfs project is used to note that how to access /proc file with
+   standard filesystem method (file operations)-
+ 
+
+Release History:
+/******************************************************************************
+ * Release Information
+ * Project: procfs
+ * Version: V0.1
+ * Date	  : 2013/12/23
+ ******************************************************************************/
+ 1. Access /proc file with standard filesystem (fops, read)-
