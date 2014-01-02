@@ -30,14 +30,21 @@ static struct proc_dir_entry *procfs_usi_version_bios_entry;
 static char procfs_buf[PROCFS_MAX_SIZE];
 static unsigned int procfs_buffer_size = 0;
 
+static int write_profs(struct file *filp, const char *buf, size_t count, loff_t *offp)
+{
+	if(count > PROCFS_MAX_SIZE)
+		procfs_buffer_size = PROCFS_MAX_SIZE;
+	else
+		procfs_buffer_size = count;
+	if(copy_from_user(procfs_buf, buf, count))
+		return -EFAULT;
+
+	return procfs_buffer_size;
+}
+
 static int read_procfs(struct file *filp, char __user *buf, size_t count, loff_t *offp)
 {
  	static int finished = 0;
-	int len = 0;
-	
-	sprintf(procfs_buf, "PROCFSTEST\n");
-	while(procfs_buf[len])
-		len++;
 	
 	if(finished){
 		finished = 0;
@@ -45,13 +52,11 @@ static int read_procfs(struct file *filp, char __user *buf, size_t count, loff_t
 	}
 		
 	finished = 1;
-	
-	if(len > PROCFS_MAX_SIZE)
-		len = PROCFS_MAX_SIZE;
 		
-	copy_to_user(buf, procfs_buf, len);
+	if(copy_to_user(buf, procfs_buf, procfs_buffer_size))
+		return -EFAULT;
 	
-	return len;
+	return procfs_buffer_size;
 }
 static int open_procfs(struct inode *inode, struct file *filp){
 	return 0;
@@ -61,6 +66,7 @@ static const struct file_operations bios_fops = {
 	.owner = THIS_MODULE,
 	.open = open_procfs,
 	.read = read_procfs,
+	.write = write_profs,
 };
 
 static int __init procfs_init(void)
