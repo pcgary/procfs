@@ -14,6 +14,7 @@ Release History:
  ******************************************************************************/
  1. Access /proc file with standard filesystem (fops, read)-
  2. Add standard filesystem write function into procfs.c (fops, write)-
+ 3. Modify some declaration to avoid warning message while compiling-
 
 /******************************************************************************
  * Release Information

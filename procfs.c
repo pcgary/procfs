@@ -30,7 +30,7 @@ static struct proc_dir_entry *procfs_usi_version_bios_entry;
 static char procfs_buf[PROCFS_MAX_SIZE];
 static unsigned int procfs_buffer_size = 0;
 
-static int write_profs(struct file *filp, const char *buf, size_t count, loff_t *offp)
+static ssize_t write_profs(struct file *filp, const char *buf, size_t count, loff_t *offp)
 {
 	if(count > PROCFS_MAX_SIZE)
 		procfs_buffer_size = PROCFS_MAX_SIZE;
@@ -42,7 +42,7 @@ static int write_profs(struct file *filp, const char *buf, size_t count, loff_t 
 	return procfs_buffer_size;
 }
 
-static int read_procfs(struct file *filp, char __user *buf, size_t count, loff_t *offp)
+static ssize_t read_procfs(struct file *filp, char __user *buf, size_t count, loff_t *offp)
 {
  	static int finished = 0;
 	
@@ -58,7 +58,8 @@ static int read_procfs(struct file *filp, char __user *buf, size_t count, loff_t
 	
 	return procfs_buffer_size;
 }
-static int open_procfs(struct inode *inode, struct file *filp){
+static int open_procfs(struct inode *inode, struct file *filp)
+{
 	return 0;
 }
 
