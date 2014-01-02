@@ -1,7 +1,9 @@
 Notes:
 1. This procfs project is used to note that how to access /proc file with
    standard filesystem method (file operations)-
- 
+2. Structure proc_dir_entry has been modified from kernel 3.10, so the read_
+   proc function and write_proc should be modified as fops->read and fops->
+   write.
 
 Release History:
 /******************************************************************************
